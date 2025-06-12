@@ -17,6 +17,26 @@
     }
   }
   window.addEventListener("load", initAutocomplete);
+document.addEventListener("DOMContentLoaded", function () {
+    const division = localStorage.getItem("selectedDivision");
+    const cost = localStorage.getItem("estimatedCost");
+
+    if (division) {
+      const select = document.getElementById("divisionSelect");
+      for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].value === division) {
+          select.selectedIndex = i;
+          select.dispatchEvent(new Event("change")); // trigger dynamic task box
+          break;
+        }
+      }
+    }
+
+    if (cost) {
+      document.getElementById("budgetInput").value = "Estimated: R" + Number(cost).toLocaleString();
+    }
+  });
+
 </script>
 
 <body>
@@ -70,7 +90,7 @@
 
 <!-- FORM SECTION -->
 <section class="form-section">
-  <form action="submit-booking.php" method="POST" enctype="multipart/form-data">
+  <form action="backend/submit-booking.php" method="POST" enctype="multipart/form-data">
 
     <div class="row">
       <div class="col-md-6">
@@ -114,7 +134,7 @@
 
 
     <label class="form-label">Budget Range (R)</label>
-    <input type="text" class="form-control" name="budget" placeholder="e.g. 1000 - 3000" />
+    <input type="text" class="form-control" name="budget" id="budgetInput" placeholder="e.g. 1000 - 3000" />
 
     <label class="form-label">Preferred Contact Method</label>
     <select class="form-select" name="contact_method">
