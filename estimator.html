@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZESolutions - Service Estimators</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	
+    <style>
+        .estimator-card {
+            border: 2px solid #000;
+            border-radius: 10px;
+            transition: all 0.3s;
+            margin-bottom: 2rem;
+        }
+        .estimator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .nav-pills .nav-link.active {
+            background-color: #000;
+            color: #44f2cb;
+            font-weight: bold;
+        }
+        .nav-pills .nav-link {
+            color: #000;
+            border: 2px solid #000;
+            margin: 0.25rem;
+            font-weight: bold;
+        }
+        .division-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #44f2cb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        .result-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #44f2cb;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body style="background-color: #f8f9fa;">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #44f2cb;">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html" style="color: #000;">ZESolutions</a>
+            <button class="navbar-toggler border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-dark border-2 fw-bold" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-dark border-2 fw-bold" href="service.html">Services</a>
+                    </li>
+					<li class="nav-item me-2">
+                        <a class="btn btn-dark fw-bold" href="estimator.html">Estimator</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-dark border-2 fw-bold" href="booking.html">Book Now</a>
+                    </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold mb-3">Service Cost Estimators</h1>
+            <p class="lead">Get instant estimates for all our services</p>
+        </div>
+
+        <!-- Division Navigation -->
+        <ul class="nav nav-pills justify-content-center mb-5" id="division-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="electrical-tab" data-bs-toggle="pill" data-bs-target="#electrical" type="button" role="tab">
+                    ⚡ Electrical
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="water-tab" data-bs-toggle="pill" data-bs-target="#water" type="button" role="tab">
+                    💧 Water
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="auto-tab" data-bs-toggle="pill" data-bs-target="#auto" type="button" role="tab">
+                    🚗 Auto
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="security-tab" data-bs-toggle="pill" data-bs-target="#security" type="button" role="tab">
+                    🔒 Security
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="building-tab" data-bs-toggle="pill" data-bs-target="#building" type="button" role="tab">
+                    🧰 Building
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="solar-tab" data-bs-toggle="pill" data-bs-target="#solar" type="button" role="tab">
+                    ☀️ Solar
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="division-tabs-content">
+            <!-- Electrical Wiring Estimator -->
+            <div class="tab-pane fade show active" id="electrical" role="tabpanel">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="estimator-card p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="division-icon">
+                                    ⚡
+                                </div>
+                                <h2 class="fw-bold mb-0">Electrical Wiring Estimator</h2>
+                            </div>
+                            
+                            <form id="electricalForm">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Room Size (m²)</label>
+                                    <input type="range" class="form-range" min="10" max="100" step="5" id="roomSize" oninput="updateRoomSize()">
+                                    <div class="d-flex justify-content-between">
+                                        <small>10m²</small>
+                                        <output id="roomSizeValue" class="fw-bold">15m²</output>
+                                        <small>100m²</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Number of Plug Points</label>
+                                    <input type="number" class="form-control border-dark border-2 py-2" min="1" max="20" value="4" id="plugPoints">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Type of Switches</label>
+                                    <select class="form-select border-dark border-2 py-2" id="switchType">
+                                        <option value="standard">Standard</option>
+                                        <option value="dimmer">Dimmer</option>
+                                        <option value="smart">Smart Switches</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Special Connections</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="stove" id="stoveCheck">
+                                        <label class="form-check-label" for="stoveCheck">Stove</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="geyser" id="geyserCheck">
+                                        <label class="form-check-label" for="geyserCheck">Geyser</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="exterior" id="exteriorCheck">
+                                        <label class="form-check-label" for="exteriorCheck">Exterior Lights</label>
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn btn-dark w-100 fw-bold py-2" onclick="calculateElectrical()">Calculate Estimate</button>
+                                
+                                <div id="electricalResult" class="result-box d-none">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="fw-bold mb-0">Estimated Cost:</h5>
+                                        <h4 class="fw-bold text-success mb-0" id="electricalCost">R0</h4>
+                                    </div>
+                                    <hr>
+                                    <p class="small mb-1"><span class="fw-bold">Includes:</span> Labor, basic materials, compliance check</p>
+                                    <p class="small mb-0"><span class="fw-bold">Note:</span> Final quote may vary after site inspection</p>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="booking.html" class="btn btn-outline-dark fw-bold me-2">Book Site Inspection</a>
+                            <a href="electrical.html" class="btn btn-dark fw-bold">View All Electrical Services</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Water Solutions Estimator -->
+            <div class="tab-pane fade" id="water" role="tabpanel">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="estimator-card p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="division-icon">
+                                    💧
+                                </div>
+                                <h2 class="fw-bold mb-0">Water Solutions Estimator</h2>
+                            </div>
+                            
+                            <form id="waterForm">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Tank Size Needed</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="tankSize" id="tankSmall" value="2200" autocomplete="off" checked>
+                                        <label class="btn btn-outline-dark" for="tankSmall">2,200L</label>
+                                        
+                                        <input type="radio" class="btn-check" name="tankSize" id="tankMedium" value="5000" autocomplete="off">
+                                        <label class="btn btn-outline-dark" for="tankMedium">5,000L</label>
+                                        
+                                        <input type="radio" class="btn-check" name="tankSize" id="tankLarge" value="10000" autocomplete="off">
+                                        <label class="btn btn-outline-dark" for="tankLarge">10,000L</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Pump Type</label>
+                                    <select class="form-select border-dark border-2 py-2" id="pumpType">
+                                        <option value="none">No Pump</option>
+                                        <option value="manual">Manual Pressure Pump</option>
+                                        <option value="auto">Automatic Pressure Pump</option>
+                                        <option value="borehole">Borehole Pump</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Installation Complexity</label>
+                                    <select class="form-select border-dark border-2 py-2" id="waterComplexity">
+                                        <option value="simple">Simple (Ground level, easy access)</option>
+                                        <option value="medium">Medium (Roof installation or tight space)</option>
+                                        <option value="complex">Complex (Multi-level, special fittings needed)</option>
+                                    </select>
+                                </div>
+                                
+                                <button type="button" class="btn btn-dark w-100 fw-bold py-2" onclick="calculateWater()">Calculate Estimate</button>
+                                
+                                <div id="waterResult" class="result-box d-none">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="fw-bold mb-0">Estimated Cost:</h5>
+                                        <h4 class="fw-bold text-success mb-0" id="waterCost">R0</h4>
+                                    </div>
+                                    <hr>
+                                    <p class="small mb-1"><span class="fw-bold">Includes:</span> Tank, basic installation, fittings</p>
+                                    <p class="small mb-0"><span class="fw-bold">Note:</span> Does not include municipal permits if required</p>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="booking.html" class="btn btn-outline-dark fw-bold me-2">Request Site Assessment</a>
+                            <a href="water.html" class="btn btn-dark fw-bold">View Water Solutions</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Auto & Fleet Estimator -->
+            <div class="tab-pane fade" id="auto" role="tabpanel">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="estimator-card p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="division-icon">
+                                    🚗
+                                </div>
+                                <h2 class="fw-bold mb-0">Auto & Fleet Estimator</h2>
+                            </div>
+                            
+                            <form id="autoForm">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Service Type</label>
+                                    <select class="form-select border-dark border-2 py-2" id="autoService" onchange="updateAutoForm()">
+                                        <option value="wash">Car Wash</option>
+                                        <option value="detail">Detailing</option>
+                                        <option value="paint">Spray Painting</option>
+                                        <option value="fleet">Fleet Service</option>
+                                    </select>
+                                </div>
+                                
+                                <div id="washOptions">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Vehicle Type</label>
+                                        <select class="form-select border-dark border-2 py-2">
+                                            <option value="sedan">Sedan</option>
+                                            <option value="suv">SUV/4x4</option>
+                                            <option value="bakkie">Bakkie</option>
+                                            <option value="minibus">Minibus/Taxi</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div id="paintOptions" class="d-none">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Paint Area</label>
+                                        <select class="form-select border-dark border-2 py-2">
+                                            <option value="panel">Single Panel</option>
+                                            <option value="bumper">Bumper</option>
+                                            <option value="half">Half Vehicle</option>
+                                            <option value="full">Full Respray</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Paint Quality</label>
+                                        <select class="form-select border-dark border-2 py-2">
+                                            <option value="standard">Standard</option>
+                                            <option value="premium">Premium</option>
+                                            <option value="custom">Custom Color</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div id="fleetOptions" class="d-none">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Number of Vehicles</label>
+                                        <input type="number" class="form-control border-dark border-2 py-2" min="1" value="5">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Service Frequency</label>
+                                        <select class="form-select border-dark border-2 py-2">
+                                            <option value="weekly">Weekly</option>
+                                            <option value="biweekly">Bi-weekly</option>
+                                            <option value="monthly">Monthly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn btn-dark w-100 fw-bold py-2" onclick="calculateAuto()">Calculate Estimate</button>
+                                
+                                <div id="autoResult" class="result-box d-none">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="fw-bold mb-0">Estimated Cost:</h5>
+                                        <h4 class="fw-bold text-success mb-0" id="autoCost">R0</h4>
+                                    </div>
+                                    <hr>
+                                    <p class="small mb-1" id="autoIncludes"></p>
+                                    <p class="small mb-0"><span class="fw-bold">Note:</span> Mobile service available at your location</p>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="booking.html" class="btn btn-outline-dark fw-bold me-2">Book Mobile Service</a>
+                            <a href="auto.html" class="btn btn-dark fw-bold">View Auto Services</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Solutions Estimator -->
+            <div class="tab-pane fade" id="security" role="tabpanel">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="estimator-card p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="division-icon">
+                                    🔒
+                                </div>
+                                <h2 class="fw-bold mb-0">Security Solutions Estimator</h2>
+                            </div>
+                            
+                            <form id="securityForm">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">System Type</label>
+                                    <select class="form-select border-dark border-2 py-2" id="securitySystem">
+                                        <option value="basic">Basic Alarm System</option>
+                                        <option value="cctv">CCTV Package</option>
+                                        <option value="fencing">Electric Fencing</option>
+                                        <option value="combo">Full Security Combo</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Property Size</label>
+                                    <select class="form-select border-dark border-2 py-2" id="propertySize">
+                                        <option value="small">Small (1-2 rooms)</option>
+                                        <option value="medium">Medium (3-4 rooms)</option>
+                                        <option value="large">Large (House + Yard)</option>
+                                        <option value="commercial">Commercial Property</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Additional Features</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="monitoring" id="monitoringCheck">
+                                        <label class="form-check-label" for="monitoringCheck">24/7 Monitoring</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="smart" id="smartCheck">
+                                        <label class="form-check-label" for="smartCheck">Smart Home Integration</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="backup" id="backupCheck">
+                                        <label class="form-check-label" for="backupCheck">Battery Backup</label>
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn btn-dark w-100 fw-bold py-2" onclick="calculateSecurity()">Calculate Estimate</button>
+                                
+                                <div id="securityResult" class="result-box d-none">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="fw-bold mb-0">Estimated Cost:</h5>
+                                        <h4 class="fw-bold text-success mb-0" id="securityCost">R0</h4>
+                                    </div>
+                                    <hr>
+                                    <p class="small mb-1"><span class="fw-bold">Includes:</span> Equipment and basic installation</p>
+                                    <p class="small mb-0"><span class="fw-bold">Note:</span> 6-month maintenance plan available</p>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="booking.html" class="btn btn-outline-dark fw-bold me-2">Book Security Consultation</a>
+                            <a href="security.html" class="btn btn-dark fw-bold">View Security Packages</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Building Maintenance Estimator -->
+            <div class="tab-pane fade" id="building" role="tabpanel">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="estimator-card p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="division-icon">
+                                    🧰
+                                </div>
+                                <h2 class="fw-bold mb-0">Building Maintenance Estimator</h2>
+                            </div>
+                            
+                            <form id="buildingForm">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Service Type</label>
+                                    <select class="form-select border-dark border-2 py-2" id="buildingService">
+                                        <option value="painting">Painting</option>
+                                        <option value="plumbing">Plumbing</option>
+                                        <option value="roof">Roof Repair</option>
+                                        <option value="general">General Maintenance</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Area Size (m²)</label>
+                                    <input type="number" class="form-control border-dark border-2 py-2" min="1" value="10" id="buildingArea">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Surface Condition</label>
+                                    <select class="form-select border-dark border-2 py-2" id="surfaceCondition">
+                                        <option value="good">Good (Minor prep needed)</option>
+                                        <option value="average">Average (Some repairs needed)</option>
+                                        <option value="poor">Poor (Extensive prep needed)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Material Quality</label>
+                                    <select class="form-select border-dark border-2 py-2" id="materialQuality">
+                                        <option value="economy">Economy</option>
+                                        <option value="standard">Standard</option>
+                                        <option value="premium">Premium</option>
+                                    </select>
+                                </div>
+                                
+                                <button type="button" class="btn btn-dark w-100 fw-bold py-2" onclick="calculateBuilding()">Calculate Estimate</button>
+                                
+                                <div id="buildingResult" class="result-box d-none">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="fw-bold mb-0">Estimated Cost:</h5>
+                                        <h4 class="fw-bold text-success mb-0" id="buildingCost">R0</h4>
+                                    </div>
+                                    <hr>
+                                    <p class="small mb-1"><span class="fw-bold">Includes:</span> Labor and basic materials</p>
+                                    <p class="small mb-0"><span class="fw-bold">Note:</span> Bundle discounts available for multiple services</p>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="booking.html" class="btn btn-outline-dark fw-bold me-2">Request Detailed Quote</a>
+                            <a href="building.html" class="btn btn-dark fw-bold">View Maintenance Services</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Solar Energy Estimator -->
+            <div class="tab-pane fade" id="solar" role="tabpanel">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="estimator-card p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="division-icon">
+                                    ☀️
+                                </div>
+                                <h2 class="fw-bold mb-0">Solar Energy Estimator</h2>
+                            </div>
+                            
+                            <form id="solarForm">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Monthly Electricity Bill</label>
+                                    <select class="form-select border-dark border-2 py-2" id="electricityBill">
+                                        <option value="low">Under R1000</option>
+                                        <option value="medium">R1000 - R3000</option>
+                                        <option value="high">Over R3000</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">System Type</label>
+                                    <select class="form-select border-dark border-2 py-2" id="solarSystem">
+                                        <option value="basic">Basic (Essential loads only)</option>
+                                        <option value="standard">Standard (Most household needs)</option>
+                                        <option value="premium">Premium (Full home backup)</option>
+                                        <option value="commercial">Commercial/Industrial</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Additional Options</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="monitoring" id="solarMonitoring">
+                                        <label class="form-check-label" for="solarMonitoring">Smart Monitoring</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="battery" id="solarBattery">
+                                        <label class="form-check-label" for="solarBattery">Battery Backup</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="geyser" id="solarGeyser">
+                                        <label class="form-check-label" for="solarGeyser">Solar Geyser</label>
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn btn-dark w-100 fw-bold py-2" onclick="calculateSolar()">Calculate Estimate</button>
+                                
+                                <div id="solarResult" class="result-box d-none">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="fw-bold mb-0">Estimated Cost:</h5>
+                                        <h4 class="fw-bold text-success mb-0" id="solarCost">R0</h4>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="small mb-1"><span class="fw-bold">Estimated Savings:</span></p>
+                                        <p class="small mb-1 fw-bold" id="solarSavings">R0/month</p>
+                                    </div>
+                                    <p class="small mb-0"><span class="fw-bold">Note:</span> Free energy audit available</p>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="booking.html" class="btn btn-outline-dark fw-bold me-2">Book Energy Audit</a>
+                            <a href="solar.html" class="btn btn-dark fw-bold">View Solar Solutions</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+<script>
+        // Update room size value display
+        function updateRoomSize() {
+            document.getElementById('roomSizeValue').textContent = document.getElementById('roomSize').value + 'm²';
+        }
+        
+        // Update auto form based on service selection
+        function updateAutoForm() {
+            const service = document.getElementById('autoService').value;
+            document.getElementById('washOptions').classList.add('d-none');
+            document.getElementById('paintOptions').classList.add('d-none');
+            document.getElementById('fleetOptions').classList.add('d-none');
+            
+            if (service === 'wash' || service === 'detail') {
+                document.getElementById('washOptions').classList.remove('d-none');
+            } else if (service === 'paint') {
+                document.getElementById('paintOptions').classList.remove('d-none');
+            } else if (service === 'fleet') {
+                document.getElementById('fleetOptions').classList.remove('d-none');
+            }
+        }
+        
+        // Calculation functions for each division
+        function calculateElectrical() {
+            const roomSize = parseInt(document.getElementById('roomSize').value);
+            const plugPoints = parseInt(document.getElementById('plugPoints').value);
+            const switchType = document.getElementById('switchType').value;
+            
+            let baseCost = 800;
+            let sizeCost = roomSize * 20;
+            let plugCost = plugPoints * 150;
+            
+            // Adjust for switch type
+            if (switchType === 'dimmer') plugCost += plugPoints * 50;
+            if (switchType === 'smart') plugCost += plugPoints * 200;
+            
+            // Add special connections
+            if (document.getElementById('stoveCheck').checked) baseCost += 1200;
+            if (document.getElementById('geyserCheck').checked) baseCost += 1500;
+            if (document.getElementById('exteriorCheck').checked) baseCost += 800;
+            
+            const total = baseCost + sizeCost + plugCost;
+            
+            document.getElementById('electricalResult').classList.remove('d-none');
+            document.getElementById('electricalCost').textContent = 'R' + total.toLocaleString();
+        }
+        
+        function calculateWater() {
+            const tankSize = parseInt(document.querySelector('input[name="tankSize"]:checked').value);
+            const pumpType = document.getElementById('pumpType').value;
+            const complexity = document.getElementById('waterComplexity').value;
+            
+            let cost = tankSize * 1; // Base tank cost
+            
+            // Add pump cost
+            if (pumpType === 'manual') cost += 2500;
+            if (pumpType === 'auto') cost += 4500;
+            if (pumpType === 'borehole') cost += 8500;
+            
+            // Adjust for complexity
+            if (complexity === 'medium') cost *= 1.3;
+            if (complexity === 'complex') cost *= 1.6;
+            
+            document.getElementById('waterResult').classList.remove('d-none');
+            document.getElementById('waterCost').textContent = 'R' + Math.round(cost).toLocaleString();
+        }
+        
+        function calculateAuto() {
+            const service = document.getElementById('autoService').value;
+            let cost = 0;
+            let includes = '';
+            
+            if (service === 'wash') {
+                cost = 150;
+                includes = 'Exterior wash and vacuum';
+            } else if (service === 'detail') {
+                cost = 600;
+                includes = 'Full interior/exterior detailing';
+            } else if (service === 'paint') {
+                const area = document.querySelector('#paintOptions select').value;
+                if (area === 'panel') cost = 1200;
+                if (area === 'bumper') cost = 1800;
+                if (area === 'half') cost = 4500;
+                if (area === 'full') cost = 9500;
+                includes = 'Paint and labor';
+            } else if (service === 'fleet') {
+                const vehicles = parseInt(document.querySelector('#fleetOptions input').value);
+                cost = vehicles * 100;
+                includes = vehicles + ' vehicle exterior wash';
+            }
+            
+            document.getElementById('autoResult').classList.remove('d-none');
+            document.getElementById('autoCost').textContent = 'R' + cost.toLocaleString();
+            document.getElementById('autoIncludes').textContent = 'Includes: ' + includes;
+        }
+        
+        function calculateSecurity() {
+            const system = document.getElementById('securitySystem').value;
+            const size = document.getElementById('propertySize').value;
+            
+            let cost = 0;
+            
+            // Base system cost
+            if (system === 'basic') cost = 3500;
+            if (system === 'cctv') cost = 8500;
+            if (system === 'fencing') cost = 12000;
+            if (system === 'combo') cost = 22000;
+            
+            // Adjust for property size
+            if (size === 'medium') cost *= 1.5;
+            if (size === 'large') cost *= 2.5;
+            if (size === 'commercial') cost *= 4;
+            
+            // Add features
+            if (document.getElementById('monitoringCheck').checked) cost += 5000;
+            if (document.getElementById('smartCheck').checked) cost += 3000;
+            if (document.getElementById('backupCheck').checked) cost += 2500;
+            
+            document.getElementById('securityResult').classList.remove('d-none');
+            document.getElementById('securityCost').textContent = 'R' + Math.round(cost).toLocaleString();
+        }
+        
+        function calculateBuilding() {
+            const service = document.getElementById('buildingService').value;
+            const area = parseInt(document.getElementById('buildingArea').value);
+            const condition = document.getElementById('surfaceCondition').value;
+            const quality = document.getElementById('materialQuality').value;
+            
+            let costPerM2 = 0;
+            
+            // Base cost per m²
+            if (service === 'painting') costPerM2 = 120;
+            if (service === 'plumbing') costPerM2 = 250;
+            if (service === 'roof') costPerM2 = 350;
+            if (service === 'general') costPerM2 = 180;
+            
+            // Adjust for condition
+            if (condition === 'average') costPerM2 *= 1.3;
+            if (condition === 'poor') costPerM2 *= 1.8;
+            
+            // Adjust for quality
+            if (quality === 'standard') costPerM2 *= 1.2;
+            if (quality === 'premium') costPerM2 *= 1.5;
+            
+            const total = Math.round(area * costPerM2);
+            
+            document.getElementById('buildingResult').classList.remove('d-none');
+            document.getElementById('buildingCost').textContent = 'R' + total.toLocaleString();
+        }
+        
+        function calculateSolar() {
+            const bill = document.getElementById('electricityBill').value;
+            const system = document.getElementById('solarSystem').value;
+            
+            let cost = 0;
+            let savings = 0;
+            
+            // Base system cost
+            if (system === 'basic') {
+                cost = 25000;
+                savings = 800;
+            } else if (system === 'standard') {
+                cost = 55000;
+                savings = 1800;
+            } else if (system === 'premium') {
+                cost = 95000;
+                savings = 2800;
+            } else if (system === 'commercial') {
+                cost = 180000;
+                savings = 6000;
+            }
+            
+            // Adjust for electricity usage
+            if (bill === 'low') {
+                cost *= 0.7;
+                savings *= 0.7;
+            } else if (bill === 'high') {
+                cost *= 1.4;
+                savings *= 1.4;
+            }
+            
+            // Add features
+            if (document.getElementById('solarMonitoring').checked) cost += 5000;
+            if (document.getElementById('solarBattery').checked) cost += 25000;
+            if (document.getElementById('solarGeyser').checked) cost += 15000;
+            
+            document.getElementById('solarResult').classList.remove('d-none');
+            document.getElementById('solarCost').textContent = 'R' + Math.round(cost).toLocaleString();
+            document.getElementById('solarSavings').textContent = 'R' + Math.round(savings).toLocaleString() + '/month';
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateRoomSize();
+            updateAutoForm();
+        });
+    </script>
+	</body>
+	</html>

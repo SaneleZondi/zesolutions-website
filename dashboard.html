@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZESolutions - Client Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin: 0 0 0 1rem;
+        }
+        .timeline-step {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+        .timeline-step:last-child {
+            padding-bottom: 0;
+        }
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: -2.2rem;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: #dee2e6;
+        }
+        .timeline-step.complete::before {
+            background: #198754;
+        }
+        .timeline-step.current::before {
+            background: #0d6efd;
+        }
+        .circle {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: absolute;
+            left: -3.2rem;
+            top: 0;
+        }
+        .timeline-content {
+            padding-left: 1rem;
+        }
+        .service-badge {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+        }
+    </style>
+</head>
+<body style="background-color: #f8f9fa;">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #44f2cb;">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html" style="color: #000;">ZESolutions</a>
+            <button class="navbar-toggler border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-dark border-2 fw-bold" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-dark border-2 fw-bold" href="service.html">Services</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-dark fw-bold" href="booking.html">Book Now</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row">
+            <!-- Left Sidebar -->
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="card border-dark mb-4">
+                    <div class="card-header bg-dark text-white fw-bold">
+                        My Account
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                </svg>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="fw-bold mb-0">Welcome, Thabiso</h5>
+                                <small class="text-muted">Member since 2022</small>
+                            </div>
+                        </div>
+                        
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Active Bookings
+                                <span class="badge bg-dark rounded-pill">2</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Completed Services
+                                <span class="badge bg-secondary rounded-pill">5</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Warranty Coverage
+                                <span class="badge bg-success rounded-pill">3 items</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Referral Credits
+                                <span class="badge bg-warning text-dark rounded-pill">R450</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card border-dark">
+                    <div class="card-header bg-dark text-white fw-bold">
+                        Quick Actions
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-outline-dark w-100 mb-2 fw-bold d-flex align-items-center justify-content-between">
+                            <span>Download Invoice</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-outline-dark w-100 mb-2 fw-bold d-flex align-items-center justify-content-between">
+                            <span>Request Callback</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-outline-dark w-100 mb-2 fw-bold d-flex align-items-center justify-content-between">
+                            <span>Service History</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M1 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3v-3.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V16h3a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1Zm2.5 2a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2Zm0 4a.5.5 0 0 1 .5-.5h4a.5

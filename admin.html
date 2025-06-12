@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZESolutions - Job Inspection</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f2f2f2;
+    }
+    h1, h2 {
+      color: #003366;
+    }
+    .container {
+      max-width: 700px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .quote-box {
+      background: #e6f2ff;
+      padding: 10px;
+      margin-top: 15px;
+      border-left: 4px solid #0052cc;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>ZESolutions Job Inspection</h1>
+
+  <label for="clientName">Client Name:</label>
+  <input type="text" id="clientName" required>
+
+  <label for="serviceType">Service Type:</label>
+  <select id="serviceType">
+    <option value="electrical">Electrical</option>
+    <option value="plumbing">Plumbing</option>
+    <option value="building">Building</option>
+    <option value="solar">Solar</option>
+  </select>
+
+  <label for="jobDescription">Job Description:</label>
+  <textarea id="jobDescription" rows="4" placeholder="Describe the issue or work needed..."></textarea>
+
+  <label for="estimatedHours">Estimated Hours of Work:</label>
+  <input type="number" id="estimatedHours" placeholder="e.g. 3">
+
+  <button onclick="calculateQuote()">Generate Quote</button>
+
+  <div class="quote-box" id="quoteBox" style="display:none;">
+    <h2>Estimated Quote:</h2>
+    <p id="quoteResult">R 0.00</p>
+    <button onclick="submitQuote()">Submit for Admin Review</button>
+  </div>
+</div>
+
+<script>
+  const baseRates = {
+    electrical: 500,
+    plumbing: 450,
+    building: 400,
+    solar: 600
+  };
+
+  function calculateQuote() {
+    const service = document.getElementById("serviceType").value;
+    const hours = parseFloat(document.getElementById("estimatedHours").value);
+    if (isNaN(hours) || hours <= 0) {
+      alert("Please enter a valid number of hours.");
+      return;
+    }
+
+    const rate = baseRates[service];
+    const quote = hours * rate;
+
+    document.getElementById("quoteResult").innerText = "R " + quote.toFixed(2);
+    document.getElementById("quoteBox").style.display = "block";
+  }
+
+  function submitQuote() {
+    const data = {
+      clientName: document.getElementById("clientName").value,
+      serviceType: document.getElementById("serviceType").value,
+      jobDescription: document.getElementById("jobDescription").value,
+      hours: document.getElementById("estimatedHours").value,
+      quote: document.getElementById("quoteResult").innerText
+    };
+
+    console.log("Submitted Quote:", data);
+    alert("Quote submitted for admin approval!");
+    // In production, send data via fetch/AJAX to backend PHP/API endpoint
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZESolutions - Educational Resources</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .resource-card {
+            border: 2px solid #000;
+            transition: all 0.3s;
+            height: 100%;
+        }
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .resource-icon {
+            width: 48px;
+            height: 48px;
+            background-color: #44f2cb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .category-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+        }
+    </style>
+</head>
+<body style="background-color: #f8f9fa;">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #44f2cb;">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html" style="color: #000;">ZESolutions</a>
+            <button class="navbar-toggler border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-dark border-2 fw-bold" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-dark border-2 fw-bold" href="service.html">Services</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-dark fw-bold" href="booking.html">Book Now</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold" style="color: #000;">Helpful Resources</h1>
+            <p class="lead" style="color: #000;">Learn more about our services and how to maintain your systems</p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Electrical Resource -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card resource-card position-relative">
+                    <span class="category-badge bg-dark text-white">Electrical</span>
+                    <div class="card-body">
+                        <div class="resource-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000" viewBox="0 0 16 16">
+                                <path d="M6 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 0zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 0zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 10 0zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 12 0z"/>
+                                <path d="M5.5 4A1.5 1.5 0 0 0 4 5.5v5A1.5 1.5 0 0 0 5.5 12h5A1.5 1.5 0 0 0 12 10.5v-5A1.5 1.5 0 0 0 10.5 4h-5ZM5
