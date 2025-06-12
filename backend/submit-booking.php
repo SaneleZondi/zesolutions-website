@@ -4,8 +4,8 @@
 // DB settings
 $host = 'localhost';
 $db = 'zesolutions_db';
-$user = 'root'; // Use your hosting username if live
-$pass = '';     // Use your DB password if live
+$user = 'root'; // my hosting username
+$pass = '';     // my DB password
 
 $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
