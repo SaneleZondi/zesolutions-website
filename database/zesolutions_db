@@ -1,18 +1,96 @@
-CREATE DATABASE zesolutions_db;
-
+-- Main database setup
+CREATE DATABASE IF NOT EXISTS zesolutions_db;
 USE zesolutions_db;
 
+-- Users table (for all roles)
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'employee', 'client') NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Bookings table
 CREATE TABLE bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    phone VARCHAR(20),
-    email VARCHAR(100),
-    division VARCHAR(100),
+    client_id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    division ENUM('Electrical Wiring', 'Water Solutions', 'Auto & Fleet', 'Security Solutions', 'Building Maintenance', 'Solar Energy') NOT NULL,
     task_type VARCHAR(100),
-    address TEXT,
-    description TEXT,
-    preferred_date DATE,
-    budget VARCHAR(50),
-    contact_method VARCHAR(20),
-    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    address TEXT NOT NULL,
+    description TEXT NOT NULL,
+    preferred_date DATE NOT NULL,
+    budget_estimate VARCHAR(50),
+    contact_method ENUM('Call', 'Chat') NOT NULL,
+    status ENUM('Pending', 'Assigned', 'Inspection', 'Quoted', 'Approved', 'In Progress', 'Completed', 'Cancelled') DEFAULT 'Pending',
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES users(id)
+);
+
+-- Employee assignments
+CREATE TABLE assignments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,
+    employee_id INT NOT NULL,
+    assigned_by INT NOT NULL, -- admin who assigned
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('Pending', 'Accepted', 'Declined', 'Completed') DEFAULT 'Pending',
+    FOREIGN KEY (booking_id) REFERENCES bookings(id),
+    FOREIGN KEY (employee_id) REFERENCES users(id),
+    FOREIGN KEY (assigned_by) REFERENCES users(id)
+);
+
+-- Inspection updates
+CREATE TABLE inspection_updates (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    assignment_id INT NOT NULL,
+    update_type ENUM('Measurement', 'Photo', 'Note', 'Video', 'Document') NOT NULL,
+    content TEXT NOT NULL, -- JSON or file paths
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (assignment_id) REFERENCES assignments(id)
+);
+
+-- Quotes and pricing
+CREATE TABLE quotes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,
+    created_by INT NOT NULL, -- admin who created
+    amount DECIMAL(10,2) NOT NULL,
+    breakdown TEXT NOT NULL, -- JSON with line items
+    status ENUM('Pending', 'Approved', 'Rejected', 'Revised') DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES bookings(id),
+    FOREIGN KEY (created_by) REFERENCES users(id)
+);
+
+-- Communication system
+CREATE TABLE communications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,
+    sender_id INT NOT NULL,
+    recipient_id INT NOT NULL,
+    message TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES bookings(id),
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (recipient_id) REFERENCES users(id)
+);
+
+-- Audit log for security
+CREATE TABLE audit_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    action VARCHAR(100) NOT NULL,
+    entity_type VARCHAR(50),
+    entity_id INT,
+    old_value TEXT,
+    new_value TEXT,
+    ip_address VARCHAR(45),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );

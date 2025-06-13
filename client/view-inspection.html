@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inspection Report</title>
+    <link href="../assets/css/client.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Inspection Report</h1>
+        <div id="reportContent">
+            <!-- Content will be loaded via JavaScript -->
+            Loading report...
+        </div>
+    </div>
+
+    <script src="../assets/js/client.js"></script>
+    <script>
+        // Load inspection data when page loads
+        document.addEventListener('DOMContentLoaded', async function() {
+            const inspectionId = sessionStorage.getItem('inspectionId');
+            
+            if (!inspectionId) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`../backend/actions.php?action=get_inspection&id=${inspectionId}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    renderInspectionReport(result.data);
+                } else {
+                    document.getElementById('reportContent').innerHTML = `
+                        <div class="error">${result.message}</div>
+                        <a href="index.html" class="btn-back">Back to Login</a>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+        
+        function renderInspectionReport(data) {
+            let html = `
+                <div class="report-header">
+                    <h2>Inspection ID: ${data.inspection_id}</h2>
+                    <p>Date: ${new Date(data.created_at).toLocaleDateString()}</p>
+                </div>
+                <div class="report-details">
+                    <h3>Details</h3>
+                    <p>Type: ${data.inspection_data.type}</p>
+            `;
+            
+            // Type-specific details
+            if (data.inspection_data.type === 'electrical') {
+                html += `
+                    <p>Voltage: ${data.inspection_data.voltage}V</p>
+                    <p>Circuit Status: ${data.inspection_data.circuit_status}</p>
+                `;
+            } else {
+                html += `
+                    <p>Water Pressure: ${data.inspection_data.water_pressure} PSI</p>
+                    <p>Pipe Condition: ${data.inspection_data.pipe_condition}</p>
+                `;
+            }
+            
+            // Photos
+            if (data.inspection_data.photos && data.inspection_data.photos.length > 0) {
+                html += `<h3>Photos</h3><div class="photo-gallery">`;
+                data.inspection_data.photos.forEach(photo => {
+                    html += `<img src="../${photo}" alt="Inspection photo">`;
+                });
+                html += `</div>`;
+            }
+            
+            html += `</div>`;
+            document.getElementById('reportContent').innerHTML = html;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<?php
+session_start();
+require 'db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $role = $_POST['role'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    if ($role === 'admin') {
+        $stmt = $conn->prepare("SELECT * FROM admins WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 1) {
+            $admin = $result->fetch_assoc();
+            if (password_verify($password, $admin['password'])) {
+                $_SESSION['user_role'] = 'admin';
+                $_SESSION['username'] = $admin['username'];
+                $_SESSION['user_id'] = $admin['id'];
+                header("Location: admin-dashboard.php");
+                exit();
+            } else {
+                $error = "Invalid password for admin.";
+            }
+        } else {
+            $error = "Admin username not found.";
+        }
+    } elseif ($role === 'employee') {
+        $stmt = $conn->prepare("SELECT * FROM employees WHERE employee_id = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 1) {
+            $employee = $result->fetch_assoc();
+            // For employees, assuming password stored hashed. Use password_verify or plain-text compare:
+            if (password_verify($password, $employee['password'])) {
+                $_SESSION['user_role'] = 'employee';
+                $_SESSION['employee_id'] = $employee['employee_id'];
+                $_SESSION['username'] = $employee['name'];
+                header("Location: employee-inspection.php");
+                exit();
+            } else {
+                $error = "Invalid password for employee.";
+            }
+        } else {
+            $error = "Employee ID not found.";
+        }
+    } else {
+        $error = "Please select a valid role.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ZESolutions Login</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #eef2f7; padding: 30px; }
+  .login-box { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+  h2 { text-align: center; color: #003366; }
+  label { display: block; margin: 15px 0 5px; }
+  input, select { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+  button { width: 100%; padding: 10px; background: #007bff; border: none; color: white; font-size: 16px; cursor: pointer; margin-top: 20px; }
+  button:hover { background: #0056b3; }
+  .error { color: red; margin-top: 15px; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="login-box">
+  <h2>ZESolutions Login</h2>
+  <form method="POST" action="">
+    <label for="role">Select Role</label>
+    <select name="role" id="role" required>
+      <option value="" disabled selected>-- Choose role --</option>
+      <option value="admin">Admin</option>
+      <option value="employee">Employee</option>
+    </select>
+
+    <label for="username">Username / Employee ID</label>
+    <input type="text" id="username" name="username" placeholder="Enter username or employee ID" required />
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Enter password" required />
+
+    <button type="submit">Login</button>
+  </form>
+
+  <?php if (!empty($error)): ?>
+    <div class="error"><?= htmlspecialchars($error) ?></div>
+  <?php endif; ?>
+</div>
+
+</body>
+</html>
