@@ -1,0 +1,72 @@
+<?php
+session_start();
+require '../backend/db.php';
+
+// Check if client has inspection ID
+if (!isset($_SESSION['inspection_id'])) {
+    header("Location: index.html");
+    exit();
+}
+
+$inspection_id = $_SESSION['inspection_id'];
+$stmt = $conn->prepare("SELECT b.*, i.inspection_data, i.created_at as inspection_date 
+                       FROM bookings b 
+                       LEFT JOIN inspections i ON b.inspection_id = i.inspection_id 
+                       WHERE b.inspection_id = ?");
+$stmt->bind_param("s", $inspection_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$booking = $result->fetch_assoc();
+
+$inspection_data = $booking['inspection_data'] ? json_decode($booking['inspection_data'], true) : null;
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Dashboard</title>
+    <style>
+        /* Add your styling here */
+    </style>
+</head>
+<body>
+    <h1>Your Service Request</h1>
+    
+    <div class="booking-info">
+        <h2>Booking Details</h2>
+        <p>ID: <?= $booking['inspection_id'] ?></p>
+        <p>Service: <?= $booking['division'] ?> - <?= $booking['task_type'] ?></p>
+        <p>Status: <?= $booking['status'] ?></p>
+        <p>Submitted: <?= $booking['submitted_at'] ?></p>
+        
+        <?php if ($booking['price']): ?>
+            <h3>Price Estimate: R<?= number_format($booking['price'], 2) ?></h3>
+        <?php endif; ?>
+    </div>
+    
+    <?php if ($inspection_data): ?>
+    <div class="inspection-report">
+        <h2>Inspection Report</h2>
+        <p>Date: <?= $booking['inspection_date'] ?></p>
+        
+        <h3>Findings</h3>
+        <?php if ($inspection_data['type'] === 'electrical'): ?>
+            <p>Voltage: <?= $inspection_data['voltage'] ?>V</p>
+            <p>Circuit Status: <?= $inspection_data['circuit_status'] ?></p>
+        <?php else: ?>
+            <p>Water Pressure: <?= $inspection_data['water_pressure'] ?> PSI</p>
+            <p>Pipe Condition: <?= $inspection_data['pipe_condition'] ?></p>
+        <?php endif; ?>
+        
+        <?php if (!empty($inspection_data['photos'])): ?>
+            <h3>Photos</h3>
+            <div class="photo-gallery">
+                <?php foreach ($inspection_data['photos'] as $photo): ?>
+                    <img src="../<?= $photo ?>" alt="Inspection photo" style="max-width: 200px;">
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
+</body>
+</html>
